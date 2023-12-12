@@ -28,6 +28,25 @@ body {
 }
 
 .x-rays {
+  margin: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .x-rays {
+    animation: x-rays-spin infinite 60s linear;
+  }
+}
+
+@keyframes x-rays-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.logo {
   position: fixed;
   top: 50%;
   left: 50%;
