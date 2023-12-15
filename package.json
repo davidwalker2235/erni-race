@@ -4,6 +4,9 @@
   "authors": [
     "Mario Cao"
   ],
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
