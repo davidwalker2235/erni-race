@@ -1,49 +1,37 @@
-// server.js
-const next = require("next");
-const routes = require("./routes");
-const app = next({ dev: process.env.NODE_ENV !== "production" });
-const handler = routes.getRequestHandler(app);
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 
-// With express
-const express = require("express");
-// With Express Peer Server
-const ExpressPeerServer = require("peer").ExpressPeerServer;
+const httpServer = http.createServer();
 
-app.prepare().then(() => {
-  var expressApp = express();
-  var server = require("http").createServer(expressApp);
+const io = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:3000", // Replace with your frontend URL
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true,
+    },
+});
 
-  // Signalling server
-  var expressPeerServer = ExpressPeerServer(server, {
-    allow_discovery: true,
-    debug: true
-  });
-  expressApp.use("/peerjs", expressPeerServer);
-  var connected = [];
-  expressPeerServer.on("connection", function(id) {
-    var idx = connected.indexOf(id); // only add id if it's not in the list yet
-    if (idx === -1) {
-      connected.push(id);
-    }
-  });
-  expressPeerServer.on("disconnect", function(id) {
-    var idx = connected.indexOf(id); // only attempt to remove id if it's in the list
-    if (idx !== -1) {
-      connected.splice(idx, 1);
-    }
-  });
+io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+    socket.on("join_room", (roomId) => {
+        socket.join(roomId);
+        console.log(`user with id-${socket.id} joined room - ${roomId}`);
+    });
 
-  expressApp.get("/peerjs/:channel", function(req, res) {
-    var channel = req.params.channel;
-    return res.json(
-      connected.filter(item => {
-        var ch = item.split("-");
-        return ch.length === 2 && ch[0] === channel;
-      })
-    );
-  });
+    socket.on("send_msg", (data) => {
+        console.log(data, "DATA");
+        //This will send a message to a specific room ID
+        socket.to(data.roomId).emit("receive_msg", data);
+    });
 
-  console.log("Listening on port 3000!");
-  expressApp.use(handler);
-  server.listen(3000);
+    socket.on("disconnect", () => {
+        console.log("A user disconnected:", socket.id);
+    });
+});
+
+const PORT = process.env.PORT || 3001;
+httpServer.listen(PORT, () => {
+    console.log(`Socket.io server is running on port ${PORT}`);
 });
