@@ -1,7 +1,7 @@
 "use client";
 import styles from "./page.module.css";
 import { io } from "socket.io-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from 'next/image'
 import ChatPage from "@/components/page";
 
@@ -11,8 +11,29 @@ export default function Home() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [roomId, setroomId] = useState("");
 
+  const { Server } = require("socket.io");
+  const { useAzureSocketIO } = require("@azure/web-pubsub-socket.io");
+
+  let io = new Server(3000);
+
+// Use the following line to integrate with Web PubSub for Socket.IO
+  useAzureSocketIO(io, {
+    hub: "Hub", // The hub name can be any valid string.
+    connectionString: process.argv[2]
+  });
+
+  io.on("connection", (socket: any) => {
+    // Sends a message to the client
+    socket.emit("hello", "world");
+
+    // Receives a message from the client
+    socket.on("howdy", (arg: any) => {
+      console.log(arg);   // Prints "stranger"
+    })
+  });
+
   var socket: any;
-  socket = io("http://erni-race-server.azurewebsites.net");
+  socket = io("erni-race-server.webpubsub.azure.com");
 
   const handleJoin = () => {
     if (userName !== "" && roomId !== "") {

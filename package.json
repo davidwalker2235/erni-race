@@ -10,6 +10,7 @@
     "node": "node server.js"
   },
   "dependencies": {
+    "@azure/web-pubsub-socket.io": "^1.0.1",
     "@types/socket.io": "^3.0.2",
     "next": "14.0.4",
     "react": "^18",
