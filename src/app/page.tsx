@@ -1,18 +1,10 @@
 "use client";
-import styles from "./page.module.css";
-import { io } from "socket.io-client";
-import { useState, useEffect } from "react";
+
 import Image from 'next/image'
-import ChatPage from "@/components/page";
+import { Server } from "socket.io"
+import { useAzureSocketIO } from "@azure/web-pubsub-socket.io"
 
 export default function Home() {
-  const [showChat, setShowChat] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [showSpinner, setShowSpinner] = useState(false);
-  const [roomId, setroomId] = useState("");
-
-  const { Server } = require("socket.io");
-  const { useAzureSocketIO } = require("@azure/web-pubsub-socket.io");
 
   let io = new Server(3000);
 
@@ -31,24 +23,6 @@ export default function Home() {
       console.log(arg);   // Prints "stranger"
     })
   });
-
-  var socket: any;
-  socket = io("erni-race-server.webpubsub.azure.com");
-
-  const handleJoin = () => {
-    if (userName !== "" && roomId !== "") {
-      console.log(userName, "userName", roomId, "roomId");
-      socket.emit("join_room", roomId);
-      setShowSpinner(true);
-// You can remove this setTimeout and add your own logic
-      setTimeout(() => {
-        setShowChat(true);
-        setShowSpinner(false);
-      }, 4000);
-    } else {
-      alert("Please fill in Username and Room Id");
-    }
-  };
 
   return (
       <div>
