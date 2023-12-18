@@ -1,37 +1,20 @@
-const http = require("http");
 const { Server } = require("socket.io");
-const cors = require("cors");
+const { useAzureSocketIO } = require("@azure/web-pubsub-socket.io");
 
-const httpServer = http.createServer();
+let io = new Server(3000);
 
-const io = new Server(httpServer, {
-    cors: {
-        origin: "http://localhost:3000", // Replace with your frontend URL
-        methods: ["GET", "POST"],
-        allowedHeaders: ["my-custom-header"],
-        credentials: true,
-    },
+// Use the following line to integrate with Web PubSub for Socket.IO
+useAzureSocketIO(io, {
+    hub: "Hub", // The hub name can be any valid string.
+    connectionString: "Endpoint=https://erni-race-server.webpubsub.azure.com;AccessKey=RZq9o8HbBg/ze1wn/+l5JieSQ/MgqkN+gC0N3OUNiis=;Version=1.0;"
 });
 
 io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
-    socket.on("join_room", (roomId) => {
-        socket.join(roomId);
-        console.log(`user with id-${socket.id} joined room - ${roomId}`);
-    });
+    // Sends a message to the client
+    socket.emit("hello", "world");
 
-    socket.on("send_msg", (data) => {
-        console.log(data, "DATA");
-        //This will send a message to a specific room ID
-        socket.to(data.roomId).emit("receive_msg", data);
-    });
-
-    socket.on("disconnect", () => {
-        console.log("A user disconnected:", socket.id);
-    });
-});
-
-const PORT = process.env.PORT || 3001;
-httpServer.listen(PORT, () => {
-    console.log(`Socket.io server is running on port ${PORT}`);
+    // Receives a message from the client
+    socket.on("howdy", (arg) => {
+        console.log(arg);   // Prints "stranger"
+    })
 });

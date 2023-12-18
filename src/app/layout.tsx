@@ -1,6 +1,18 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import {io} from "socket.io-client"
+
+const socket = io("https://erni-race-server.webpubsub.azure.com", {
+  path: "/clients/socketio/hubs/Hub",
+});
+// Receives a message from the server
+socket.on("hello", (arg) => {
+  console.log(arg);
+});
+
+// Sends a message to the server
+socket.emit("howdy", "stranger")
 
 const inter = Inter({ subsets: ['latin'] })
 

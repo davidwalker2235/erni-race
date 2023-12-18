@@ -1,28 +1,8 @@
 "use client";
 
 import Image from 'next/image'
-import { Server } from "socket.io"
-import { useAzureSocketIO } from "@azure/web-pubsub-socket.io"
 
 export default function Home() {
-
-  let io = new Server(3000);
-
-// Use the following line to integrate with Web PubSub for Socket.IO
-  useAzureSocketIO(io, {
-    hub: "Hub", // The hub name can be any valid string.
-    connectionString: process.argv[2]
-  });
-
-  io.on("connection", (socket: any) => {
-    // Sends a message to the client
-    socket.emit("hello", "world");
-
-    // Receives a message from the client
-    socket.on("howdy", (arg: any) => {
-      console.log(arg);   // Prints "stranger"
-    })
-  });
 
   return (
       <div>
