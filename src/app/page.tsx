@@ -12,7 +12,7 @@ export default function Home() {
   const [roomId, setroomId] = useState("");
 
   var socket: any;
-  socket = io("http://erni-race-server.azurewebsites.net:3001");
+  socket = io("http://erni-race-server.azurewebsites.net");
 
   const handleJoin = () => {
     if (userName !== "" && roomId !== "") {
