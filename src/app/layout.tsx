@@ -3,9 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import {io} from "socket.io-client"
 
-const socket = io("https://erni-race-server.webpubsub.azure.com", {
-  path: "/clients/socketio/hubs/Hub",
-});
+const socket = io("erni-race-server.azurewebsites.net");
 // Receives a message from the server
 socket.on("hello", (arg) => {
   console.log(arg);

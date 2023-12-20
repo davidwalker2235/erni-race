@@ -1,6 +1,16 @@
 "use client";
 
 import Image from 'next/image'
+import {io} from "socket.io-client"
+
+const socket = io("erni-race-server.azurewebsites.net");
+// Receives a message from the server
+socket.on("connection", (arg) => {
+    console.log(arg);
+});
+
+// Sends a message to the server
+socket.emit("howdy", "stranger")
 
 export default function Home() {
 

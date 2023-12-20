@@ -1,9 +1,8 @@
 "use client";
-import styles from "./page.module.css";
+
 import { io } from "socket.io-client";
 import { useState } from "react";
 import Image from 'next/image'
-import ChatPage from "@/components/page";
 
 export default function Home() {
     const [showChat, setShowChat] = useState(false);
