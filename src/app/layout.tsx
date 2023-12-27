@@ -1,7 +1,8 @@
 "use client";
 
-import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import {ParallaxProvider} from "react-scroll-parallax";
+import {SocketProvider} from "@/app/Providers/socketProvider";
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -12,8 +13,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" style={{overflow: 'hidden'}}>
-      <body className={inter.className}>{children}</body>
+    <html lang="en">
+        <body className={inter.className} style={{overflowY: 'hidden'}}>
+            <SocketProvider>
+                <ParallaxProvider scrollAxis="horizontal">
+                    {children}
+                </ParallaxProvider>
+            </SocketProvider>
+        </body>
     </html>
   )
 }
