@@ -1,54 +1,29 @@
 "use client";
 import React, {useRef} from "react";
 import Image from 'next/image'
-import {useParallax, ParallaxProvider} from "react-scroll-parallax";
+import Layer from "@/app/game/layer";
 
-const Game = () => {
+const Page = () => {
     const target = useRef(null)
-    const farBuilds = useParallax({
-        targetElement: target.current,
-        translateX: [-43, 50],
-        easing: "easeOutQuad",
-    })
-    const closeUpBuilds = useParallax({
-        targetElement: target.current,
-        translateX: [0, 200],
-        easing: "easeOutQuad",
-    })
+    const width = 10000;
 
     return (
         <div ref={target} style={{
             backgroundImage: "url('/sky.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            width: '5000px'
+            width: `${width}px`
         }} className="h-screen">
             <div className="fixed top-10 left-0 w-full">
-                <Image className="bg-repeat-x" src="/moon.png" alt="moon" height={120} width={2000}/>
+                <Image className="bg-repeat-x" src="/moon.png" alt="moon" height={120} width={width}/>
             </div>
-            <div
-                ref={farBuilds.ref}
-                className="absolute"
-                style={{display:'flex', maxWidth:'5000px'}}>
-                    <Image className="bg-repeat-x" src="/farBuildings.png" alt="farBuildings" height={350} width={1000} />
-                    <Image className="bg-repeat-x" src="/farBuildings.png" alt="farBuildings" height={350} width={1000} />
-                    <Image className="bg-repeat-x" src="/farBuildings.png" alt="farBuildings" height={350} width={1000} />
-                    <Image className="bg-repeat-x" src="/farBuildings.png" alt="farBuildings" height={350} width={1000} />
-                    <Image className="bg-repeat-x" src="/farBuildings.png" alt="farBuildings" height={350} width={1000} />
-            </div>
-            <div
-                ref={closeUpBuilds.ref}
-                className="absolute"
-                style={{display:'flex', maxWidth:'5000px'}}
-            >
-                <Image src="/closeUpBuild.png" alt="farBuildings" height={350} width={1000} />
-                <Image src="/closeUpBuild.png" alt="farBuildings" height={350} width={1000} />
-                <Image src="/closeUpBuild.png" alt="farBuildings" height={350} width={1000} />
-                <Image src="/closeUpBuild.png" alt="farBuildings" height={350} width={1000} />
-                <Image src="/closeUpBuild.png" alt="farBuildings" height={350} width={1000} />
-            </div>
+            <Layer filename="farBuild" target={target} width={width} translate={[-50, 50]} />
+            <Layer filename="closeBuild" target={target} width={width} translate={[-50, 40]} />
+            <Layer filename="trees" target={target} width={width} translate={[-50, 15]} />
+            <Layer filename="pista" target={target} width={width} translate={[-50, 15]} />
+
         </div>
     );
 }
 
-export default Game;
+export default Page;
