@@ -13,8 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 const RootLayout = ({
   children
 }: {
-  children: ReactNode,
-    value: any
+  children: ReactNode
 }) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
 
