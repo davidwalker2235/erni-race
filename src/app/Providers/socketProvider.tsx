@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from 'react';
+import { createContext } from 'react';
 import {io} from "socket.io-client"
 
 const SocketContext = createContext({});
@@ -11,15 +11,13 @@ export function SocketProvider({children}: {
 
     // const socket = io("erni-race-server.azurewebsites.net");
     const socket = io("localhost:3001");
-    socket.on("connection", (arg) => {
-        console.log(arg);
+    // @ts-ignore
+    socket.on("connect", (socket: any) => {
+        console.log(socket.id);
     });
 
-    socket.emit("howdy", "stranger")
-    const [isOpen, setIsOpen] = useState();
-
     return (
-        <SocketContext.Provider value={{ socket }}>
+        <SocketContext.Provider value={{ socket: socket }}>
             {children}
         </SocketContext.Provider>
     );
