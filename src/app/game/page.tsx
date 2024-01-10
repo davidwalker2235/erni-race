@@ -2,6 +2,7 @@
 import React, {useRef} from "react";
 import Image from 'next/image'
 import Layer from "@/app/game/layer";
+import Runner from "@/app/game/runner";
 
 const Page = () => {
     const target = useRef(null)
@@ -21,7 +22,6 @@ const Page = () => {
             <Layer filename="closeBuild" target={target} width={width} translate={[-50, 40]} />
             <Layer filename="trees" target={target} width={width} translate={[-50, 15]} />
             <Layer filename="pista" target={target} width={width} translate={[-50, 15]} />
-
         </div>
     );
 }
