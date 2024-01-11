@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {AppContext} from "@/app/Providers/appProvider";
 
-export function ConnectionState({ isConnected }: {isConnected: boolean}) {
-    return <p>State: { '' + isConnected }</p>;
+export function ConnectionState() {
+    const context: any = useContext(AppContext)
+    return <p>State: { '' + context.isConnected }</p>;
 }

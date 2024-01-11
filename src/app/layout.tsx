@@ -1,12 +1,13 @@
 "use client";
-import {useState, useEffect, ReactNode} from "react";
-import {socket} from "@/app/socket";
+import React, {ReactNode, useContext} from "react";
 import { Inter } from 'next/font/google'
 import {ParallaxProvider} from "react-scroll-parallax";
 import './globals.css'
 import ConnectionManager from "@/app/Components/ConnectionManager";
 import {ConnectionState} from "@/app/Components/ConnectionState";
-import {AppProvider} from "@/app/Providers/appProvider";
+import {AppContext, AppProvider} from "@/app/Providers/appProvider";
+import {NextUIProvider} from "@nextui-org/react";
+import Loading from "@/app/Components/Loading";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,40 +16,21 @@ const RootLayout = ({
 }: {
   children: ReactNode
 }) => {
-    const [isConnected, setIsConnected] = useState(socket.connected);
-
-    const onConnect = () => {
-        setIsConnected(true);
-
-    }
-    const onDisconnect = () => {
-        setIsConnected(false);
-    }
-    function onReceiveUsers() {
-    }
-
-    useEffect(() => {
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
-        socket.on('receiveUsers', onReceiveUsers);
-
-        return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
-            socket.off('receiveUsers', () => null);
-        };
-    }, []);
+    const context: any = useContext(AppContext)
 
   return (
     <html lang="en">
         <body className={inter.className} style={{overflowY: 'hidden'}}>
-        <AppProvider>
-            <ParallaxProvider scrollAxis="horizontal">
-                {children}
-                <ConnectionState isConnected={ isConnected } />
-                <ConnectionManager />
-            </ParallaxProvider>
-        </AppProvider>
+        <NextUIProvider>
+            <AppProvider>
+                <Loading />
+                <ParallaxProvider scrollAxis="horizontal">
+                    {children}
+                    <ConnectionManager />
+                    <ConnectionState />
+                </ParallaxProvider>
+            </AppProvider>
+        </NextUIProvider>
         </body>
     </html>
   )

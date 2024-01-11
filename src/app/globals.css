@@ -55,3 +55,9 @@ body {
   transform: translate(-50%, -50%);
   margin: auto;
 }
+
+.loading-background {
+  background-color: black;
+  z-index: 100;
+  opacity: 0.5;
+}

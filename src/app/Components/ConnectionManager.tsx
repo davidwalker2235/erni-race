@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { socket } from "@/app/socket";
+import {AppContext} from "@/app/Providers/appProvider";
 
 const ConnectionManager = () => {
+    const context: any = useContext(AppContext)
     const connect = () => {
-        socket.connect();
+        context?.setLoadingData({isLoading: true, loadingText: 'Connecting'})
+        // socket.connect();
     }
 
     const disconnect = () => {
-        socket.disconnect();
+        // context?.showLoading(false)
+        // socket.disconnect();
     }
 
     return (
