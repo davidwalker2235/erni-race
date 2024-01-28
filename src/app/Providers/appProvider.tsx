@@ -10,10 +10,12 @@ export const AppProvider = ({children}: {
 }) => {
 
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [loadingData, setLoadingData] = useState<{isLoading: boolean, loadingText: string}>({isLoading: false, loadingText: ''})
+    const [loadingData, setLoadingData] = useState<{isLoading: boolean, loadingText?: string}>({isLoading: false, loadingText: ''})
 
     const onConnect = () => {
-        setIsConnected(true);
+        debugger;
+        console.log(socket?.id)
+        setLoadingData({isLoading: false, loadingText: ''});
 
     }
     const onDisconnect = () => {
@@ -31,6 +33,8 @@ export const AppProvider = ({children}: {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('receiveUsers', () => null);
+            debugger
+            socket.emit('onDisconnect', socket?.id)
         };
     }, []);
 

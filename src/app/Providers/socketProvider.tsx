@@ -13,7 +13,8 @@ export function SocketProvider({children}: {
     const socket = io("localhost:3001");
     // @ts-ignore
     socket.on("connect", (socket: any) => {
-        console.log(socket.id);
+        debugger;
+        console.log(socket?.id);
     });
 
     return (
